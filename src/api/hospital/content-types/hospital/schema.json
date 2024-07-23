@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hospitals",
+  "info": {
+    "singularName": "hospital",
+    "pluralName": "hospitals",
+    "displayName": "Hospital",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Address": {
+      "type": "text",
+      "required": true
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Email": {
+      "type": "email",
+      "required": true
+    },
+    "Website": {
+      "type": "string",
+      "required": true
+    },
+    "Phone": {
+      "type": "biginteger",
+      "required": true
+    },
+    "Description": {
+      "type": "richtext",
+      "required": true
+    },
+    "BloodDonation": {
+      "type": "boolean",
+      "required": true
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "hospitals"
+    },
+    "appointments": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::appointment.appointment",
+      "mappedBy": "hospitals"
+    },
+    "Open": {
+      "type": "time",
+      "required": true
+    },
+    "Close": {
+      "type": "time",
+      "required": true
+    },
+    "doctors": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::doctor.doctor",
+      "mappedBy": "hospital"
+    }
+  }
+}

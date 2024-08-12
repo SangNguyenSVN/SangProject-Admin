@@ -590,51 +590,20 @@ export interface PluginContentReleasesReleaseAction
   };
 }
 
-export interface PluginGithubProjectsProject extends Schema.CollectionType {
-  collectionName: 'projects';
+export interface PluginStrapiGoogleAuthGoogleCredential
+  extends Schema.SingleType {
+  collectionName: 'strapi-google-auth_google-credential';
   info: {
-    singularName: 'project';
-    pluralName: 'projects';
-    displayName: 'Project';
+    displayName: 'Google Credentials';
+    singularName: 'google-credential';
+    pluralName: 'google-credentials';
+    description: 'Stores google project credentials';
+    tableName: 'google_auth_creds';
   };
   options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    repositoryId: Attribute.UID & Attribute.Unique;
-    title: Attribute.String & Attribute.Required & Attribute.Unique;
-    shortDescription: Attribute.String;
-    repositoryUrl: Attribute.String;
-    longDescription: Attribute.RichText;
-    coverImage: Attribute.Media<'images'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::github-projects.project',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'plugin::github-projects.project',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
-  info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
+    privateAttributes: ['id', 'created_at'];
+    populateCreatorFields: true;
+    draftAndPublish: true;
   };
   pluginOptions: {
     'content-manager': {
@@ -645,29 +614,23 @@ export interface PluginI18NLocale extends Schema.CollectionType {
     };
   };
   attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-          max: 50;
-        },
-        number
-      >;
-    code: Attribute.String & Attribute.Unique;
+    google_client_id: Attribute.String & Attribute.Required;
+    google_client_secret: Attribute.String & Attribute.Required;
+    google_redirect_url: Attribute.String & Attribute.Required;
+    google_scopes: Attribute.JSON & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'plugin::strapi-google-auth.google-credential',
       'oneToOne',
       'admin::user'
-    > &
-      Attribute.Private;
+    >;
     updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'plugin::strapi-google-auth.google-credential',
       'oneToOne',
       'admin::user'
-    > &
-      Attribute.Private;
+    >;
   };
 }
 
@@ -822,6 +785,87 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface PluginGithubProjectsProject extends Schema.CollectionType {
+  collectionName: 'projects';
+  info: {
+    singularName: 'project';
+    pluralName: 'projects';
+    displayName: 'Project';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    repositoryId: Attribute.UID & Attribute.Unique;
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    shortDescription: Attribute.String;
+    repositoryUrl: Attribute.String;
+    longDescription: Attribute.RichText;
+    coverImage: Attribute.Media<'images'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::github-projects.project',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::github-projects.project',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+          max: 50;
+        },
+        number
+      >;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiAppointmentAppointment extends Schema.CollectionType {
   collectionName: 'appointments';
   info: {
@@ -903,6 +947,132 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
+  };
+}
+
+export interface ApiCookieCookie extends Schema.CollectionType {
+  collectionName: 'cookies';
+  info: {
+    singularName: 'cookie';
+    pluralName: 'cookies';
+    displayName: 'Cookies';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+    'content-manager': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cookie.cookie',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cookie.cookie',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::cookie.cookie',
+      'oneToMany',
+      'api::cookie.cookie'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiCookieCategoryCookieCategory extends Schema.CollectionType {
+  collectionName: 'cookie_categories';
+  info: {
+    singularName: 'cookie-category';
+    pluralName: 'cookie-categories';
+    displayName: 'Cookie Categories';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+    'content-manager': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cookie-category.cookie-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cookie-category.cookie-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::cookie-category.cookie-category',
+      'oneToMany',
+      'api::cookie-category.cookie-category'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiCookiePopupCookiePopup extends Schema.CollectionType {
+  collectionName: 'cookie_popups';
+  info: {
+    singularName: 'cookie-popup';
+    pluralName: 'cookie-popups';
+    displayName: 'Cookie Popups';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+    'content-manager': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cookie-popup.cookie-popup',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cookie-popup.cookie-popup',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::cookie-popup.cookie-popup',
+      'oneToMany',
+      'api::cookie-popup.cookie-popup'
+    >;
+    locale: Attribute.String;
   };
 }
 
@@ -1056,13 +1226,17 @@ declare module '@strapi/types' {
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
-      'plugin::github-projects.project': PluginGithubProjectsProject;
-      'plugin::i18n.locale': PluginI18NLocale;
+      'plugin::strapi-google-auth.google-credential': PluginStrapiGoogleAuthGoogleCredential;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'plugin::github-projects.project': PluginGithubProjectsProject;
+      'plugin::i18n.locale': PluginI18NLocale;
       'api::appointment.appointment': ApiAppointmentAppointment;
       'api::category.category': ApiCategoryCategory;
+      'api::cookie.cookie': ApiCookieCookie;
+      'api::cookie-category.cookie-category': ApiCookieCategoryCookieCategory;
+      'api::cookie-popup.cookie-popup': ApiCookiePopupCookiePopup;
       'api::doctor.doctor': ApiDoctorDoctor;
       'api::hospital.hospital': ApiHospitalHospital;
       'api::slider.slider': ApiSliderSlider;

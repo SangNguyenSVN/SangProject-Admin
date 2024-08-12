@@ -1,5 +1,4 @@
 module.exports = ({ env }) => ({
-    // ...
     upload: {
         config: {
             provider: 'cloudinary',
@@ -15,5 +14,17 @@ module.exports = ({ env }) => ({
             },
         },
     },
-    // ...
+    "strapi-google-auth": {
+        enabled: true,
+    },
+    'users-permissions': {
+        config: {
+            jwt: {
+                expiresIn: '7d',
+            },
+            register: {
+                allowedFields: ["nickname"],
+            },
+        },
+    },
 });
